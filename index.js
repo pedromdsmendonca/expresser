@@ -1,34 +1,13 @@
-const expresser = require('./expresser/expresser.js');
+const {expresser, modelBuilder} = require('./expresser/expresser.js');
 
 var app = new expresser()
+var builder = new modelBuilder()
 
 app.onPort(5001)
-.crud({ name: 'todo'}, [
-    {
-        id: 1,
-        content: 'something'
-    },
-    {
-        id: 2,
-        content: 'some other thing'
-    }
-])
-.crud({ name: 'user'}, [
-    {
-        id: 1,
-        name: 'john'
-    },
-    {
-        id: 2,
-        name: 'jane'
-    }
-])
-.crud({ name: 'test'}, [
-    {
-        id: 1,
-    },
-    {
-        id: 2,
-    }
-])
+.crud(
+    builder
+    .create('user')
+    .number('age')
+    .build()
+)
 .start()
