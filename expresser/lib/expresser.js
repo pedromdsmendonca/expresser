@@ -1,11 +1,10 @@
-const express = require('express');
+const express = require('express')
 
-var data = {}
-
-class Expresser {
+module.exports = class Expresser {
     constructor(){
         this.app = express()
         this.port = process.env.PORT || 5000
+        this.data = {}
     }
 
     onPort(port){
@@ -15,6 +14,10 @@ class Expresser {
 
     crud(model){
         this.lastModel = model
+
+        this.data[model.name] = []
+
+        let data = this.data;
 
         this.app.get(`/${model.name}/schema`, function(req, res) {
             res.send(model)
@@ -35,7 +38,7 @@ class Expresser {
     }
 
     seed(seed){
-        data[model.name] = seed
+        this.data[model.name] = seed
 
         return this
     }
@@ -45,43 +48,4 @@ class Expresser {
             console.log(`listening on port ${this.port}`);
         })
     }
-}
-
-class ModelBuilder{
-    constructor(){
-        this.props = {}
-    }
-
-    create(name){
-        this.name = name
-        this.props = {}
-
-        return this
-    }
-
-    number(name){
-        this.props[name] = 'number'
-        this.lastProp = name
-
-        return this
-    }
-
-    build(){
-        if(this.name == undefined) throw 'model needs a name'
-
-        let model = {
-            name: this.name
-        }
-
-        for(var prop in this.props){
-            model[prop] = this.props[prop]
-        }
-        
-        return model
-    }
-}
-
-module.exports = { 
-    expresser: Expresser,
-    modelBuilder: ModelBuilder
 }

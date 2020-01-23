@@ -1,4 +1,4 @@
-const {expresser, modelBuilder} = require('./expresser/expresser.js');
+const {expresser, modelBuilder} = require('./expresser');
 
 var app = new expresser()
 var builder = new modelBuilder()
